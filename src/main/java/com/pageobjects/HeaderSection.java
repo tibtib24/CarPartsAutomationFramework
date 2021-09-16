@@ -1,6 +1,7 @@
 package com.pageobjects;
 
-import java.io.IOException;
+import java.util.List;
+import java.util.function.Function;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +12,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class HeaderSection {
 
-	public HeaderSection(WebDriver driver) throws IOException {
+	public HeaderSection(WebDriver driver){
 		PageFactory.initElements(driver, this);
 	}
 	
@@ -22,23 +23,42 @@ public class HeaderSection {
 	public WebElement getSearchBox() {
 		return searchBox;
 	}
-	
+
 	@FindBy(id = "iconSearch" )
 	private WebElement iconSearch;
 	
-	@FindBy(id="iconSearch")
-	private WebElement test;
+	@FindBy(id ="selVeh")
+	private WebElement vehicleFilter;
+	
+	@FindBy(css= ".StyledText-sc-1sadyjn-0.lmCHeZ")
+	private WebElement selectVehicleFilter;
+	
+	@FindBy(id = "addVehicle")
+	private WebElement addVehicle;
+	
+	@FindBy(css = ".StyledText-sc-1sadyjn-0.kQVovg")
+	private List<WebElement> carListFilter;
 	
 	//SignIn
 	@FindBy(id = "signIn")
 	private WebElement signInBtn;
 	
+	public WebElement getSignInBtn() {
+		return signInBtn;
+	}
+
+	public void setSignInBtn(WebElement signInBtn) {
+		this.signInBtn = signInBtn;
+	}
+	
+	@FindBy(partialLinkText="myaccount")
+	private WebElement myAccountBtn;
+
 	@FindBy(css =".StyledText-sc-1sadyjn-0.beEJuh")
 	private WebElement signedInHello;
 	
 	@FindBy(css =".StyledText-sc-1sadyjn-0.fhQirM")
 	private WebElement signedInName;
-	
 	
 	//SetupShipping
 	@FindBy(id = "location")
@@ -78,6 +98,39 @@ public class HeaderSection {
 			locationButton.click();
 		}
 		
+		public void clickVehicleFilter() {
+			vehicleFilter.click();
+		}
+		
+		public void clickAddVehicle() {
+			addVehicle.click();
+		}
+		
+		public String getSelectedVehicleFilter() {
+			String selectedVehicle = selectVehicleFilter.getText();
+			return selectedVehicle;
+		}
+		
+		public boolean isSelectedVehicleFitlerDispalyed() {
+			boolean result = selectVehicleFilter.isDisplayed();
+			return result;
+		}
+		
+		public void selectVehicle(String carYear, String carMake, String carModel, String carSubModel) {
+			int size = carListFilter.size();
+			
+			for (int i=0; i<size;i++) {
+				String car = carYear + " " + carMake + " " + carModel + " " + carSubModel;
+				if(car.contains(carListFilter.get(i).getText())) {
+					carListFilter.get(i).click();
+				}	
+			}
+		}
+		
+		public List<WebElement> getVehicleFilterList() {
+			return carListFilter;
+		}
+		
 		
 		//SignIn
 		public void clickSignInBtn() {
@@ -93,6 +146,9 @@ public class HeaderSection {
 			return user;
 		}
 		
+		public void clickMyAccount() {
+			myAccountBtn.click();
+		}
 		
 		//Change Location
 		public String getShipsOrderToPopUpBoxTitle() {
@@ -125,6 +181,11 @@ public class HeaderSection {
 			String zipCode = homePageZipCode.getText();
 			return zipCode;
 		}
+
+		public WebElement getIconSearch() {
+			return iconSearch;
+		}
+		
 	
 	
 

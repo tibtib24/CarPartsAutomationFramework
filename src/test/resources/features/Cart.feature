@@ -1,13 +1,11 @@
 Feature: Add to cart Feature
   Description: Add to cart
 
-	@RegressionTest @AddToCart
-  Scenario: Add one item to cart
-    #Preconditions
+  Background: 
     Given that user is in carparts home page
-    #Actions
-    When user search for an item
-    #Additional Actions
-    And clicks add to cart
-    #Assertions
+
+  @AddToCart @RegressionTest 
+  Scenario: Add one item to cart
+    And user search for an item
+    When clicks add to cart
     Then an item is added to cart

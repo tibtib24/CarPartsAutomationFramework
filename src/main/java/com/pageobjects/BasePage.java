@@ -1,7 +1,5 @@
 package com.pageobjects;
 
-import java.io.IOException;
-
 import com.managers.PageObjectManager;
 import com.managers.WebDriverManager;
 
@@ -9,7 +7,7 @@ public class BasePage {
 private WebDriverManager webDriverManager;
 private PageObjectManager pageObjectManager;
 	
-	public BasePage() throws IOException {
+	public BasePage() {
 		webDriverManager = new WebDriverManager();	
 		pageObjectManager = new PageObjectManager(webDriverManager.createDriver());
 	}

@@ -7,6 +7,8 @@ import org.openqa.selenium.WebDriver;
 import com.pageobjects.AddToCartPage;
 import com.pageobjects.HeaderSection;
 import com.pageobjects.HomePage;
+import com.pageobjects.LoginDetailsPage;
+import com.pageobjects.MyAccountPage;
 import com.pageobjects.SearchResultPage;
 import com.pageobjects.SignInPage;
 import com.pageobjects.VehiclePage;
@@ -20,6 +22,8 @@ public class PageObjectManager {
 	AddToCartPage addToCartPage;
 	SignInPage signInPage;
 	VehiclePage vehiclePage;
+	MyAccountPage myAccountPage;
+	LoginDetailsPage loginDetailsPage;
 	
 	
 	public PageObjectManager(WebDriver driver) {
@@ -27,9 +31,7 @@ public class PageObjectManager {
 	}
 	
 	public HeaderSection getHeaderSection() throws IOException {
-		if (headerSection == null) {
-			headerSection = new HeaderSection(driver);
-		}
+		headerSection = (headerSection == null) ? new HeaderSection(driver): headerSection;
 		return headerSection;
 	}
 
@@ -51,6 +53,16 @@ public class PageObjectManager {
 	public SignInPage getSignInPage() {
 		signInPage = (signInPage==null) ? new SignInPage(driver): signInPage;
 		return signInPage;
+	}
+	
+	public MyAccountPage getMyAccountPage() {
+		myAccountPage = (myAccountPage==null) ? new MyAccountPage(driver): myAccountPage;
+		return myAccountPage;
+	}
+	
+	public LoginDetailsPage getLoginDetailsPage() {
+		loginDetailsPage = (loginDetailsPage==null) ? new LoginDetailsPage(driver): loginDetailsPage;
+		return loginDetailsPage;
 	}
 	
 	public VehiclePage getVehiclePage() {

@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.constants.Literals;
+
 
 
 public class SignInPage {
@@ -13,6 +15,8 @@ public class SignInPage {
 		PageFactory.initElements(driver, this);
 	}
 
+	String verifyFailMsg = Literals.LOGIN_VERIFCATION_ERROR_MESSAGE;
+	
 	//SignIn
 	@FindBy(id = "loginEmail")
 	private WebElement loginEmail;
@@ -25,6 +29,9 @@ public class SignInPage {
 	
 	@FindBy(id = "submitLogin")
 	private WebElement submitLogin;
+	
+	@FindBy(css = "#loginSubmit .StyledBox-sc-13pk1d4-0.jLBcvf .StyledText-sc-1sadyjn-0.hcbzKl")
+	private WebElement verificationFailedMessage;
 	
 	
 	//SignIn
@@ -43,6 +50,17 @@ public class SignInPage {
 	public void clickSignIn() {
 		submitLogin.click();
 	}
+	
+	public boolean isVerificationFailedMessageDisplayed() {
+		boolean result = verificationFailedMessage.isDisplayed();
+		return result;
+	}
+	
+	public String getVericationFailedMessage() {
+		String eMsg = verificationFailedMessage.getText();
+		return eMsg;
+	}
+	
 	
 	
 	
