@@ -3,6 +3,7 @@ package com.pageobjects;
 import java.io.IOException;
 import java.util.List;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -38,13 +39,14 @@ public class HomePage {
 	@FindBy(css = ".StyledText-sc-1sadyjn-0.gNNfTw")
 	private List<WebElement> makeDropDownList;
 	
-	
 	@FindBy(id = "select-model__input")
 	private WebElement selectModel;
 	
 	@FindBy(css =".StyledText-sc-1sadyjn-0.gNNfTw")
 	private List<WebElement> modelDropDownList;
 	
+	@FindBy (id = "select-submodel")
+	private WebElement selectSubModelField;
 	
 	@FindBy(id = "select-submodel__input")
 	private WebElement selectSubmodel;
@@ -52,8 +54,14 @@ public class HomePage {
 	@FindBy(css=".StyledText-sc-1sadyjn-0.gNNfTw")
 	private List<WebElement> submodelDropDownList;
 	
+	@FindBy(id = "select-engine")
+	private WebElement selectEngineField;
+	
 	@FindBy(id = "select-engine__input")
 	private WebElement selectEngine;	
+	
+	@FindBy(css = ".StyledBox-sc-13pk1d4-0.esTdUm")
+	private List<WebElement> engineDropDownList;
 	
 
 	//Page Actions
@@ -124,17 +132,48 @@ public class HomePage {
 		}	
 	}
 	
+	public boolean isSubModelFieldDisplayed() {
+		boolean result = selectSubModelField.isDisplayed();
+		return result;
+	}
+	
 	public void selectSubModel(String subModel) {
 		int size = submodelDropDownList.size();
 		for(int i=0; i<size; i++) {
 			String strSubModel = submodelDropDownList.get(i).getText();
 			if(subModel.equals(strSubModel)) {
-				submodelDropDownList.get(i).click();
+				submodelDropDownList.get(i).click();		
 				break;
 			}
 		}	
 	}
 	
+	public boolean isEngineFieldDisplayed() {
+		boolean result;
+		try {
+			result = selectEngineField.isDisplayed();
+		}catch(NullPointerException e){
+			result = false;
+		}catch(NoSuchElementException e) {
+			result = false;
+		}
+		return result;
+	}
 	
 	
+	public void selectEngine(String engine) {
+		int size = engineDropDownList.size();
+		for(int i=0; i<size; i++) {
+			String strEngine = engineDropDownList.get(i).getText();
+			if(engine.equals(strEngine)) {
+				engineDropDownList.get(i).click();		
+				break;
+			}
+		}	
+	}
+	
+	public WebElement getSelectYearElement() {
+		return selectYear;
+	}
+
 }

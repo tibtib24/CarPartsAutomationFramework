@@ -2,9 +2,8 @@ package stepdefinitions;
 
 import java.io.IOException;
 
-import javax.lang.model.element.Element;
-
 import org.junit.Assert;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
 import com.pageobjects.AddToCartPage;
@@ -12,7 +11,7 @@ import com.pageobjects.BasePage;
 import com.pageobjects.HeaderSection;
 import com.pageobjects.HomePage;
 import com.pageobjects.SearchResultPage;
-import com.utils.Wait;
+import com.utils.Waits;
 
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -29,7 +28,7 @@ public class AddToCartSteps {
 	HomePage homePage;
 	SearchResultPage searchResultPage;
 	AddToCartPage addToCartPage;
-	Wait element;
+	Waits element;
 	
 	
 	public AddToCartSteps(BasePage basePage) throws IOException {
@@ -55,9 +54,12 @@ public class AddToCartSteps {
 	public void user_search_for_an_item() throws InterruptedException {
 
 		//headerSection.enterSearchItemDelayed("Bumper", 1);
-		//Thread.sleep(2000);
 		headerSection.enterSearchItem("Bumper");
-		headerSection.clickIconSearch();
+		
+		JavascriptExecutor executor = (JavascriptExecutor)driver;
+		executor.executeScript("arguments[0].click()", headerSection.getIconSearch());
+		
+		//headerSection.clickIconSearch();
 	}
  
 	@And ("^clicks add to cart$")
@@ -65,6 +67,7 @@ public class AddToCartSteps {
 		
 		
 		String partNo = searchResultPage.getPartNo();
+			
 		actualItem1 = partNo.substring(partNo.lastIndexOf(":") + 1);
 		System.out.println(actualItem1);
 		
@@ -79,12 +82,7 @@ public class AddToCartSteps {
 		String partNo = addToCartPage.getPartNo();
 		String expectedItem1 = partNo.substring(partNo.lastIndexOf(":") + 1);
 		System.out.println(expectedItem1);
-		
-		
-		Assert.assertEquals(actualItem1, expectedItem1);	
-		basePage.getWebDriverManager().quitDriver();
-		
-		
+		Assert.assertEquals(actualItem1, expectedItem1);			
 	}
 	
 	

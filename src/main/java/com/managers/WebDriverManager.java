@@ -1,6 +1,7 @@
 package com.managers;
 
-import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -9,27 +10,35 @@ public class WebDriverManager {
 
 	private WebDriver driver;
 
-	public WebDriver createDriver() throws IOException {
-		String browser = ConfigFileReaderManager.getConfigFileReaderManager().getConfigFileReader().getBrowser();
-		
-	
-		switch(browser) {
+	public WebDriver createDriver() {
+		String browser = FileReaderManager.getInstance().getConfigFileReader().getBrowser();
+
+		switch (browser) {
 		case "chrome":
-			System.setProperty("webdriver.chrome.driver", ConfigFileReaderManager.getConfigFileReaderManager().getConfigFileReader().getDriverPath(browser));
-			if (driver == null) {
-				driver = new ChromeDriver();
-			}
+			System.setProperty("webdriver.chrome.driver",
+					FileReaderManager.getInstance().getConfigFileReader().getDriverPath(browser));
+			driver = (driver == null) ? new ChromeDriver() : driver;
 			break;
-		case "firefox":		
-			System.setProperty("webdriver.gecko.driver", ConfigFileReaderManager.getConfigFileReaderManager().getConfigFileReader().getDriverPath(browser));
-			if (driver == null) {
-			driver = new FirefoxDriver();
-			}
+
+		case "firefox":
+			System.setProperty("webdriver.gecko.driver",
+					FileReaderManager.getInstance().getConfigFileReader().getDriverPath(browser));
+			driver = (driver == null) ? new FirefoxDriver() : driver;
 			break;
+
 		default:
 			System.out.println("Please set a valid browser and driverpath in your configuration.properties file");
-			}
-			return driver;
+		}
+
+		// setup driver
+		long implicitWait = FileReaderManager.getInstance().getConfigFileReader().getImplicitWait();
+		driver.manage().timeouts().implicitlyWait(implicitWait, TimeUnit.SECONDS);
+
+		if (FileReaderManager.getInstance().getConfigFileReader().isMaximize()) {
+			driver.manage().window().maximize();
+		}
+
+		return driver;
 	}
 
 	public void quitDriver() {
